@@ -7,7 +7,10 @@ namespace Catalog.API.Products.CreateProduct
     : ICommand<CreateProductResult>;
     public record CreateProductResult(Guid Id);
 
-    internal class CreateProductCommandHandler : ICommandHandler<CreateProductCommand, CreateProductResult>
+    // internal - This access modifier restricts the visibility of the class to within the current assembly.
+    // It means that only classes within the same assembly can access this class.
+    internal class CreateProductCommandHandler(IDocumentSession session)
+        : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
@@ -20,7 +23,10 @@ namespace Catalog.API.Products.CreateProduct
                 Price = command.Price
             };
 
-            return new CreateProductResult(Guid.NewGuid());
+            session.Store(product);
+            await session.SaveChangesAsync(cancellationToken);
+
+            return new CreateProductResult(product.Id);
         }
     }
 }
