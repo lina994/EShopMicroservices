@@ -6,11 +6,14 @@
 
     // internal - This access modifier restricts the visibility of the class to within the current assembly.
     // It means that only classes within the same assembly can access this class.
-    internal class CreateProductCommandHandler(IDocumentSession session)
+    internal class CreateProductCommandHandler
+        (IDocumentSession session, ILogger<CreateProductCommandHandler> logger)
         : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
+            logger.LogInformation("CreateProductCommandHandler.Handle called with {@Command}", command);
+
             var product = new Product
             {
                 Name = command.Name,
