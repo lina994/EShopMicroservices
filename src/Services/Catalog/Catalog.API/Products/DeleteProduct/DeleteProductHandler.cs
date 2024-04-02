@@ -1,10 +1,20 @@
 ﻿
+using Catalog.API.Products.CreateProduct;
 using Catalog.API.Products.GetProductById;
 
 namespace Catalog.API.Products.DeleteProduct
 {
     public record DeleteProductCommand(Guid Id) : ICommand<DeleteProductResult>;
     public record DeleteProductResult(bool IsSuccess);
+
+    public class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
+    {
+        public DeleteProductCommandValidator()
+        {
+            RuleFor(command => command.Id)
+                .NotEmpty().WithMessage("Product ID is required");
+        }
+    }
 
     internal class DeleteProductCommandHandler
         (IDocumentSession session, ILogger<GetProductByIdQueryHandler> logger)

@@ -1,13 +1,20 @@
+using BuildingBlocks.Behaviors;
+
 var builder = WebApplication.CreateBuilder(args);
 
-
-// RegisterServicesFromAssembly - not supported for carter
-builder.Services.AddCarter();
+var assembly = typeof(Program).Assembly;
+var behavior = typeof(ValidationBehavior<,>);
 
 builder.Services.AddMediatR(config =>
 {
-    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.RegisterServicesFromAssembly(assembly);
+    config.AddOpenBehavior(behavior);
 });
+
+builder.Services.AddValidatorsFromAssembly(assembly);
+
+// RegisterServicesFromAssembly - not supported for carter
+builder.Services.AddCarter();
 
 builder.Services.AddMarten(opts =>
 {
