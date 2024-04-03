@@ -1,12 +1,14 @@
 var builder = WebApplication.CreateBuilder(args);
 
 var assembly = typeof(Program).Assembly;
-var behavior = typeof(ValidationBehavior<,>);
+var validationBehavior = typeof(ValidationBehavior<,>);
+var loggingBehavior = typeof(LoggingBehavior<,>);
 
 builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
-    config.AddOpenBehavior(behavior);
+    config.AddOpenBehavior(validationBehavior);
+    config.AddOpenBehavior(loggingBehavior);
 });
 
 builder.Services.AddValidatorsFromAssembly(assembly);
