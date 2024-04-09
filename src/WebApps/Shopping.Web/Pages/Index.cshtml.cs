@@ -6,11 +6,11 @@ namespace Shopping.Web.Pages
     {
         public IEnumerable<ProductModel> ProductList { get; set; } = new List<ProductModel>();
 
-        public async Task<IActionResult> OnPostAddToCartAsync(Guid productId)
+        public async Task<IActionResult> OnGetAsync(Guid productId)
         {
-            logger.LogInformation("Add to cart button clicked");
+            logger.LogInformation("Index page visited");
 
-            var productResponse = await catalogService.GetProduct(productId);
+            var productResponse = await catalogService.GetProducts();
 
             var result = await catalogService.GetProducts();
             ProductList = result.Products;
