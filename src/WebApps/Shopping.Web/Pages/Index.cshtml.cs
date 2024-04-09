@@ -17,5 +17,6 @@ namespace Shopping.Web.Pages
 
             return Page();
         }
+        public async Task<IActionResult> OnPostAddToCartAsync(Guid productId)
     }
 }
